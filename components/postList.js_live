@@ -1,0 +1,50 @@
+import React, { Component } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import './index.css';
+
+class PostList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: []
+    };
+    this.createMarkup = this.createMarkup.bind();
+  }
+
+  componentDidMount() {
+    axios.get("https://pwa.captainweb.in/wp-json/wp/v2/posts?_embed").then(posts => {
+      this.setState({
+        posts: posts.data
+      });
+    });
+  }
+
+  createMarkup(html) {
+    return { __html: html };
+  }
+
+  render() {
+    return (
+      
+      <div className="post__list__div">
+      {this.state.posts.map((post) => (
+        <Link className="card__block" to={`/${post.slug}`} key={post.id}>
+          <div className="card" key={post.id}>
+            <div className="card-content">
+              <h3 className="card__title">{post.title.rendered}</h3>
+              {post.featured_media === 0 ? <img className="card__image" src="https://via.placeholder.com/500x230" alt="NOT FOUND"/> : <img className="card__image" src={post._embedded['wp:featuredmedia']['0'].source_url} alt={post.title.rendered}/> }
+              <div className="card__excerpt"
+                dangerouslySetInnerHTML={this.createMarkup(post.excerpt.rendered.substring(0, 120))}
+              /><span className="read__more">read more</span>
+            </div>
+          </div>
+        </Link>
+      ))}
+    </div>
+  
+    );
+  }
+}
+
+export default PostList;

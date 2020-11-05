@@ -1,0 +1,109 @@
+import React, { Component } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import "./index.css";
+
+class PostList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      posts: [],
+      page: 1,
+      load: true,
+    };
+    this.createMarkup = this.createMarkup.bind();
+    this.loadMore = this.loadMore.bind(this);
+  }
+
+  componentDidMount() {
+    axios
+      .get(
+        "https://pwa.captainweb.in/wp-json/wp/v2/posts?_embed&per_page=6&page=1"
+      )
+      .then((posts) => {
+        this.setState({
+          posts: posts.data,
+          page: this.state.page + 1,
+        });
+      });
+    window.addEventListener("scroll", this.loadMore);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.loadMore);
+  }
+  createMarkup(html) {
+    return { __html: html };
+  }
+  loadMore() {
+    const windowHeight =
+      "innerHeight" in window
+        ? window.innerHeight
+        : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    //const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+    const docHeight = body.scrollHeight;
+
+    const windowBottom = Math.ceil(windowHeight + window.pageYOffset);
+    console.log(windowBottom);
+    console.log(docHeight);
+    if (windowBottom == docHeight && this.state.load) {
+      this.setState({ load: false });
+      axios
+        .get(
+          `https://pwa.captainweb.in/wp-json/wp/v2/posts?_embed&per_page=6&page=${this.state.page}`
+        )
+        .then((posts) => {
+          this.state.posts.push(...posts.data);
+          this.setState({
+            page: this.state.page + 1,
+            load: true,
+          });
+        })
+        .catch(() => {
+          this.setState({ load: true });
+          window.removeEventListener("scroll", this.loadMore);
+        });
+    }
+  }
+  render() {
+    return (
+      <div className="post__list__div">
+        {this.state.posts.map((post) => (
+          <Link className="card__block" to={`/${post.slug}`} key={post.id}>
+            <div className="card" key={post.id}>
+              <div className="card-content">
+                <h3 className="card__title">{post.title.rendered}</h3>
+                {post.featured_media === 0 ? (
+                  <img
+                    className="card__image"
+                    src="https://via.placeholder.com/500x230"
+                    alt="NOT FOUND"
+                  />
+                ) : (
+                  <img
+                    className="card__image"
+                    src={post._embedded["wp:featuredmedia"]["0"].source_url}
+                    alt={post.title.rendered}
+                  />
+                )}
+                <div
+                  className="card__excerpt"
+                  dangerouslySetInnerHTML={this.createMarkup(
+                    post.excerpt.rendered.substring(0, 120)
+                  )}
+                />
+                <span className="read__more">read more</span>
+              </div>
+            </div>
+          </Link>
+        ))}
+        <div className={!this.state.load ? "display__load" : "hide__load"}>
+          <h4>Loading...</h4>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default PostList;

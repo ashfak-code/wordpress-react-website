@@ -1,0 +1,97 @@
+import React, { Component } from "react";
+import axios from "axios";
+import { Link, BrowserRouter as Router } from "react-router-dom";
+
+class PostView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      post: {}, acf: {} ,posts: [], renderContent: ''
+    };
+    this.createMarkup = this.createMarkup.bind();
+  }
+
+  componentDidMount() {
+    const slug = this.props.match.params.slug;
+    axios
+      .get(`https://pwa.captainweb.in/wp-json/wp/v2/posts?slug=${slug}`)
+      .then(post => {
+      this.setState({
+      post: post.data[0],
+      renderContent: post.data[0].content.rendered
+      });
+    });
+    axios
+      .get(`https://pwa.captainweb.in//wp-json/wp/v2/ads/13388`)
+      .then(post => {
+      this.setState({
+      acf: post.data.acf
+      });
+    const script = document.createElement("script"); script.src = this.state.acf.["head-script"]; script.async = true; document.body.appendChild(script);
+    });
+    axios.get("https://pwa.captainweb.in//wp-json/wp/v2/posts?_embed&orderby=id&order=desc&per_page=5").then(posts => {
+      this.setState({
+        posts: posts.data
+      });
+    });
+
+  }
+
+  createMarkup(html) {
+    return { __html: html };
+  }
+
+  render() {
+     let content_debug = this.state.renderContent;
+
+      let ad = "</h2> \n" + this.state.acf.["banner-ads"] + this.state.acf.["banner-ads-mob"];
+      let wipcontent = content_debug.replace(/<\/h2>/gi, ad);
+
+      let below_image = "</figure> \n" + this.state.acf.["banner-ads"] + this.state.acf.["banner-ads-mob"];
+      let newContent = wipcontent.replace(/<\/figure>/gi, below_image);
+    let build;
+    if (this.state.post.title) {
+      build = (
+        <div className="main-content">
+        <div className="left-content">
+          <h1>{this.state.post.title.rendered}</h1>
+          
+          <div dangerouslySetInnerHTML={this.createMarkup( this.state.acf.["banner-ads"] )} />
+          <div className="lc-inner" dangerouslySetInnerHTML={this.createMarkup( newContent )} />
+        </div>
+        <div className="right-content">
+        {this.state.posts.map(post => (
+          <Link className="rc-card-a" to={`/${post.slug}`} key={post.id}>
+            <div className="rc-card" key={post.id}>
+              <div className="rc-card-content">
+              {post.featured_media === 0 ? (
+                  <img
+                      className="rc-card__image"
+                      src="https://via.placeholder.com/500x230"
+                      alt="NOT FOUND"
+                      />
+                      ) : (
+                        <img
+                        className="rc-card__image"
+                          src={post._embedded["wp:featuredmedia"]["0"].source_url}
+                          alt={post.title.rendered}
+                          />
+                          )}
+                <h3 className="rc-card__title">{post.title.rendered}</h3>
+              </div>
+            </div>
+          </Link>
+        ))}
+          <div className="rc-inner" dangerouslySetInnerHTML={this.createMarkup( this.state.acf.["right-sidebar-1"] )} />
+        </div>
+        </div>
+       
+      );
+    } else {
+      build = <div />;
+    }
+    return build;
+  }
+}
+
+export default PostView;

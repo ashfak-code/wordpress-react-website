@@ -1,0 +1,64 @@
+
+
+import React, { Component } from "react";
+import axios from "axios";
+
+class PostView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      post: {}, acf: {} , renderContent: ''
+    };
+    this.createMarkup = this.createMarkup.bind();
+  }
+
+  componentDidMount() {
+    const slug = this.props.match.params.slug;
+    axios
+      .get(`https://pwa.captainweb.in/wp-json/wp/v2/posts?slug=${slug}`)
+      .then(post => {
+      this.setState({
+      post: post.data[0],
+      renderContent: post.data[0].content.rendered
+      });
+    });
+    axios
+      .get(`https://pwa.captainweb.in//wp-json/wp/v2/books/13344`)
+      .then(post => {
+      this.setState({
+      acf: post.data.acf
+      });
+    const script = document.createElement("script"); script.src = this.state.acf.["footer-ads"]; script.async = true; document.body.appendChild(script);
+    });
+
+  }
+
+  createMarkup(html) {
+    return { __html: html };
+  }
+
+  render() {
+      let content_debug;
+      content_debug = this.state.renderContent;
+      const ad = "</p> \n" + this.state.acf.["banner-ads"];
+      const newContent= content_debug.replace(/<\/p>/gi, ad);
+      console.log(newContent);
+    let build;
+    if (this.state.post.title) {
+      build = (
+        <div>
+          <h1>{this.state.post.title.rendered}</h1>
+          
+          <div dangerouslySetInnerHTML={this.createMarkup( this.state.acf.["banner-ads"] )} />
+          <div dangerouslySetInnerHTML={this.createMarkup( newContent )} />
+        </div>
+       
+      );
+    } else {
+      build = <div />;
+    }
+    return build;
+  }
+}
+
+export default PostView;

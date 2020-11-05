@@ -1,0 +1,269 @@
+@import url("https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@300;400&family=Rajdhani:wght@400;500;600;700&display=swap");
+
+body {
+  background-color: #fff;
+  margin: 0;
+  font-family: "Rajdhani", sans-serif;
+}
+/* 
+form {
+  display: flex;
+  position: fixed;
+  bottom: 0vh;
+  width: 100%;
+  height: 60px;
+  z-index: 1;
+}
+
+input {
+  flex-grow: 11;
+  font-size: 22px;
+  color: #770f65;
+}
+
+button {
+  flex-grow: 1;
+  color: #000;
+  font-size: 22px;
+  background: #eee;
+} */
+
+.post__list__div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+img.card__image {
+  height: 230px;
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+  object-fit: cover;
+}
+
+h3.card__title {
+  font-family: "Rajdhani", sans-serif !important;
+  color: #222;
+  text-decoration: none !important;
+  font-size: 23px;
+  letter-spacing: 1px;
+  line-height: 30px;
+  min-height: 88px;
+  /*     border-bottom: 1px #8d248e solid;
+    padding-bottom: 11px; */
+}
+
+.read__more {
+  color: #770f65;
+}
+
+.card__excerpt {
+  font-family: "Rajdhani", sans-serif;
+  color: #333;
+  font-size: 17px;
+  letter-spacing: 1px;
+  min-height: 72px;
+}
+
+.display__load {
+  opacity: 1;
+  color: #770f65;
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+  font-family: "Rajdhani", sans-serif !important;
+}
+.hide__load {
+  opacity: 0;
+  font-family: "Rajdhani", sans-serif !important;
+  color: #eee;
+  transition: all 0.4s ease;
+}
+
+/* POST VIEW */
+
+.main-content {
+  display: flex;
+}
+
+
+p {
+  font-family: "Rajdhani", sans-serif;
+}
+
+.advert_slug {
+  text-align: center;
+  font-size: 13px;
+  color: #2e2e2e;
+}
+
+.left-content h1 {
+  font-size: 36px;
+  letter-spacing: 1px;
+}
+.wp-block-image img {
+    width: 100%;
+    height: auto;
+}
+
+img.rc-card__image {
+  width: 100%;
+  border-radius: 15px;
+  height: 240px;
+  object-fit: cover;
+  position: relative;
+}
+h3.rc-card__title {
+  padding: 0 10px;
+}
+a.rc-card-a {
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+.rc-card-content {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+img.rc-card__image:after {
+    content:'';
+    position: absolute;
+    width: 100%;
+    height: 300px;
+    top: 0;
+    left: 0;
+    background-color: #000;
+}
+
+@media (min-width: 991px){
+    .left-content {
+        width: 70%;
+        padding-right: 10px;
+      }
+    
+      .right-content {
+        width: 30%;
+        text-align: center;
+      }
+    
+    
+    .rc-inner {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 80px;
+        padding: 50px 0;
+        font-size: 20px;
+      }
+      section.section.container.content {
+        padding: 10px 40px;
+        min-height: 90vh;
+      }
+}
+@media (min-width: 1010px) {
+  a.card__block {
+    width: 29%;
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
+    box-shadow: 3px 2px 3px #eee;
+    padding: 10px 10px;
+  }  
+}
+
+@media (min-width: 601px) and (max-width:1010px){
+  a.card__block {
+    width: 43%;
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
+    box-shadow: 3px 2px 3px #eee;
+    padding: 10px 10px;
+  }
+}
+@media(max-width:600px){
+  a.card__block {
+    width: 98%;
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
+    box-shadow: 3px 2px 3px #eee;
+    padding: 10px 10px;
+  }
+  
+.post__list__div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column !important;
+}
+
+
+}
+  @media (min-width: 769px) and (max-width:991px){
+  .left-content {
+    width: 50%;
+  }
+  
+  .right-content {
+    width: 30%;
+    text-align: center;
+  }
+
+
+.rc-inner {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 80px;
+    padding: 50px;
+    font-size: 20px;
+  }
+  section.section.container.content {
+    padding: 10px 40px;
+    min-height: 90vh;
+  }
+}
+
+@media (min-width: 769px) {
+
+  .htlunit-DS_Desktop_Content_1 .advert_slug{
+    display: block !important;
+  }
+
+
+  .htlunit-mobile_medrec_flex .advert_slug{
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+
+  .htlunit-DS_Desktop_Content_1 .advert_slug{
+    display: none !important;
+  }
+
+
+  .htlunit-mobile_medrec_flex .advert_slug{
+    display: block !important;
+  }
+    .main-content {
+        display: flex;
+        flex-wrap: wrap;
+    }
+  .left-content {
+    width: 100%;
+  }
+
+  .right-content {
+    width: 100%;
+    text-align: center;
+  }
+
+  section.section.container.content {
+    padding: 10px 10px;
+  }
+  .rc-inner {
+    font-size: 20px;
+  }
+}
