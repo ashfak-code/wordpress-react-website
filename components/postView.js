@@ -34,7 +34,6 @@ class PostView extends Component {
         posts: posts.data
       });
     });
-
   }
 
   createMarkup(html) {
