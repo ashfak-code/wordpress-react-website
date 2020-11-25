@@ -1,0 +1,1 @@
+{"version":3,"sources":["style.css"],"names":[],"mappings":"AAAA,mBACE,sBACF","file":"style.95c566f8.css","sourceRoot":"..","sourcesContent":[".navbar > .container {\r\n  justify-content: center;\r\n}\r\n"]}
